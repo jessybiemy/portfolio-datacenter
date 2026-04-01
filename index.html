@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
 <head>
-    <meta name="google-site-verification" content="liDVyXFGmSUJQUSweAdj5BRCkCw5dkXFHHv1rdozfW8" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jessy Biemy | Dossier de Compétences - Technicien Data Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: Slate (Corporate/Tech), Teal (Validation/Success), Amber (Highlight/Energy) -->
+    <!-- Application Structure Plan: Dashboard interactif pour recruteurs ESN. Intégration d'un avatar photo dans le Hero pour humaniser le profil. -->
+    <!-- Visualization & Content Choices: Ajout d'une balise img standard avec fallback (onerror) au cas où l'image n'est pas encore chargée. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
@@ -18,6 +23,10 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f5f9; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Animation subtile pour la photo */
+        .avatar-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .avatar-hover:hover { transform: scale(1.05); box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.5); }
     </style>
 </head>
 <body class="antialiased">
@@ -35,8 +44,15 @@
         </div>
     </nav>
 
-    <header class="bg-slate-900 pt-32 pb-20 lg:pt-40 lg:pb-28 border-b border-slate-800 text-center px-4">
-        <div class="max-w-4xl mx-auto">
+    <header class="bg-slate-900 pt-32 pb-20 lg:pt-32 lg:pb-28 border-b border-slate-800 text-center px-4">
+        <div class="max-w-4xl mx-auto flex flex-col items-center">
+            
+            <!-- BLOC AVATAR PHOTO -->
+            <!-- Le script onerror permet de masquer l'image si tu n'as pas encore uploadé le fichier profil.png -->
+            <img src="profil.png" alt="Jessy Biemy" 
+                 class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-slate-800 shadow-xl mb-6 avatar-hover bg-slate-800"
+                 onerror="this.style.display='none'">
+            
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6">Technicien <span class="gradient-text">Data Center</span></h1>
             <p class="text-xl md:text-2xl text-slate-400 mb-10 font-light leading-relaxed">De l'assemblage haute densité à l'urbanisation d'infrastructures critiques.<br><strong class="text-slate-200 font-medium">Un profil opérationnel, certifiable et autofinancé.</strong></p>
             <div class="flex flex-wrap justify-center gap-4 text-sm md:text-base">

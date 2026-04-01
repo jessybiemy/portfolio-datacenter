@@ -8,25 +8,60 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
+        body { font-family: 'Inter', sans-serif; color: #0f172a; }
         .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 280px; max-height: 350px; }
         @media (min-width: 768px) { .chart-container { height: 320px; } }
-        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid rgba(226, 232, 240, 0.8); }
-        .gradient-text { background: linear-gradient(to right, #0d9488, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5); }
+        .gradient-text { background: linear-gradient(to right, #2dd4bf, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f5f9; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .avatar-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .avatar-hover:hover { transform: scale(1.05); box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.5); }
+        .avatar-hover:hover { transform: scale(1.05); box-shadow: 0 10px 30px -5px rgba(45, 212, 191, 0.6); }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
+
+        /* --- GRANULAR GRADIENT SYSTEM --- */
+        /* Effet de grain de film sur tout l'écran */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05; /* Subtil */
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Mesh Gradient Clair pour le body */
+        .light-mesh {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 10% 0%, rgba(20, 184, 166, 0.08) 0px, transparent 50%),
+                radial-gradient(at 90% 10%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Mesh Gradient Sombre pour les sections foncées */
+        .dark-mesh {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 20% 20%, rgba(13, 148, 136, 0.25) 0px, transparent 50%),
+                radial-gradient(at 80% 80%, rgba(30, 58, 138, 0.3) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(15, 23, 42, 1) 0px, transparent 100%);
+        }
     </style>
 </head>
-<body class="antialiased">
-    <nav class="fixed w-full z-50 bg-slate-900 text-white shadow-md border-b border-slate-800">
+<body class="antialiased light-mesh relative">
+    
+    <!-- Filtre Granuleux -->
+    <div class="noise-overlay"></div>
+
+    <nav class="fixed w-full z-50 bg-slate-900/90 backdrop-blur-md text-white shadow-md border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-3">
-                    <span class="text-2xl font-extrabold tracking-tighter">JESSY<span class="text-teal-500">BIEMY</span></span>
-                    <span class="hidden md:inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">ROME I1403</span>
+                    <span class="text-2xl font-extrabold tracking-tighter">JESSY<span class="text-teal-400">BIEMY</span></span>
+                    <span class="hidden md:inline-block px-2 py-0.5 rounded text-xs font-bold bg-slate-800/80 text-slate-300 border border-slate-700">ROME I1403</span>
                 </div>
                 <div class="flex space-x-3">
                     <a href="mailto:jessy.biemy1@hotmail.com" class="text-sm px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-lg transition-colors shadow-sm">Contactez-moi</a>
@@ -35,38 +70,39 @@
         </div>
     </nav>
 
-    <header class="bg-slate-900 pt-32 pb-20 lg:pt-32 lg:pb-28 border-b border-slate-800 text-center px-4">
-        <div class="max-w-4xl mx-auto flex flex-col items-center">
+    <!-- Header avec Dark Mesh Gradient -->
+    <header class="dark-mesh pt-32 pb-20 lg:pt-32 lg:pb-28 border-b border-slate-800 text-center px-4 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto flex flex-col items-center relative z-10">
             <img src="1766872162031.jpeg" alt="Jessy Biemy" 
-                 class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-slate-800 shadow-xl mb-6 avatar-hover bg-slate-800"
+                 class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-slate-800 shadow-2xl mb-6 avatar-hover bg-slate-800"
                  onerror="this.style.display='none'">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6">Technicien <span class="gradient-text">Data Center</span></h1>
-            <p class="text-xl md:text-2xl text-slate-400 mb-10 font-light leading-relaxed">De l'assemblage haute densité à l'urbanisation d'infrastructures critiques.<br><strong class="text-slate-200 font-medium">Un profil opérationnel, certifiable et autofinancé.</strong></p>
+            <p class="text-xl md:text-2xl text-slate-300 mb-10 font-light leading-relaxed">De l'assemblage haute densité à l'urbanisation d'infrastructures critiques.<br><strong class="text-white font-medium">Un profil opérationnel, certifiable et autofinancé.</strong></p>
             <div class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
-                <div class="flex items-center px-4 py-2 bg-slate-800/50 border border-teal-500/30 rounded-full text-teal-400 font-medium"><span class="mr-2">&#x2714;</span> Éligible POEI</div>
-                <div class="flex items-center px-4 py-2 bg-slate-800/50 border border-blue-500/30 rounded-full text-blue-400 font-medium"><span class="mr-2">&#x26A1;</span> Financement B1V Sécurisé</div>
-                <div class="flex items-center px-4 py-2 bg-slate-800/50 border border-amber-500/30 rounded-full text-amber-400 font-medium"><span class="mr-2">&#x1F4E1;</span> CCNA 200-301 en cours</div>
+                <div class="flex items-center px-4 py-2 bg-slate-800/60 backdrop-blur-sm border border-teal-500/40 rounded-full text-teal-300 font-medium"><span class="mr-2">&#x2714;</span> Éligible POEI</div>
+                <div class="flex items-center px-4 py-2 bg-slate-800/60 backdrop-blur-sm border border-blue-500/40 rounded-full text-blue-300 font-medium"><span class="mr-2">&#x26A1;</span> Financement B1V Sécurisé</div>
+                <div class="flex items-center px-4 py-2 bg-slate-800/60 backdrop-blur-sm border border-amber-500/40 rounded-full text-amber-300 font-medium"><span class="mr-2">&#x1F4E1;</span> CCNA 200-301 en cours</div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20 relative z-10">
         <!-- KPIs -->
-        <section class="-mt-24 relative z-10">
+        <section class="-mt-24 relative z-20">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 text-center transform transition duration-300 hover:-translate-y-1">
+                <div class="glass-panel p-6 rounded-2xl shadow-xl text-center transform transition duration-300 hover:-translate-y-1">
                     <div class="text-4xl mb-2">&#x1F5A5;</div>
                     <div class="text-3xl font-black text-slate-800 mb-1">+1500</div>
                     <div class="text-sm font-bold text-slate-500 uppercase tracking-wide">Machines Intégrées</div>
                     <div class="text-xs text-slate-400 mt-2">Serveurs, Workstations & PC (LDLC)</div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 text-center transform transition duration-300 hover:-translate-y-1">
+                <div class="glass-panel p-6 rounded-2xl shadow-xl text-center transform transition duration-300 hover:-translate-y-1">
                     <div class="text-4xl mb-2">&#x26A1;</div>
                     <div class="text-3xl font-black text-amber-500 mb-1">17 / jour</div>
                     <div class="text-sm font-bold text-slate-500 uppercase tracking-wide">Record Assemblage</div>
                     <div class="text-xs text-slate-400 mt-2">Contre 5 à 8 pour l'atelier</div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 text-center transform transition duration-300 hover:-translate-y-1">
+                <div class="glass-panel p-6 rounded-2xl shadow-xl text-center transform transition duration-300 hover:-translate-y-1">
                     <div class="text-4xl mb-2">&#x1F4B0;</div>
                     <div class="text-3xl font-black text-blue-600 mb-1">2082 €</div>
                     <div class="text-sm font-bold text-slate-500 uppercase tracking-wide">Budget CPF Acquis</div>
@@ -76,26 +112,26 @@
         </section>
 
         <!-- Productivité -->
-        <section class="glass-panel rounded-3xl p-8 lg:p-12 shadow-sm">
+        <section class="glass-panel rounded-3xl p-8 lg:p-12 shadow-md">
             <div class="max-w-3xl mb-8">
                 <h2 class="text-3xl font-bold text-slate-900 mb-4">La Haute Densité comme Standard</h2>
                 <p class="text-lg text-slate-600 leading-relaxed">Le métier de Technicien Data Center exige une rigueur industrielle. Mon passage chez LDLC sur des commandes ministérielles et B2B prouve ma capacité à allier <strong class="text-slate-900 font-bold">un volume extrême</strong> et <strong class="text-slate-900 font-bold">une précision millimétrée</strong>.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <div class="bg-white/80 p-6 rounded-2xl border border-slate-200/60 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-800 mb-6 text-center">Cadence Journalière (LDLC)</h3>
                     <div class="chart-container"><canvas id="productivityChart"></canvas></div>
                 </div>
                 <div class="space-y-6">
                     <div class="flex">
-                        <div class="flex-shrink-0 mt-1 mr-4"><span class="flex items-center justify-center h-8 w-8 rounded-full bg-teal-100 text-teal-600 font-bold">&#x2713;</span></div>
+                        <div class="flex-shrink-0 mt-1 mr-4"><span class="flex items-center justify-center h-8 w-8 rounded-full bg-teal-100/80 text-teal-600 font-bold shadow-sm">&#x2713;</span></div>
                         <div>
                             <h4 class="text-xl font-bold text-slate-800">Câblage interne & Airflow</h4>
                             <p class="text-slate-600 mt-2">Expertise dans le routage interne des câbles lors de l'assemblage des serveurs avant expédition. Une optimisation millimétrique essentielle pour garantir la durabilité thermique des composants en baie.</p>
                         </div>
                     </div>
                     <div class="flex">
-                        <div class="flex-shrink-0 mt-1 mr-4"><span class="flex items-center justify-center h-8 w-8 rounded-full bg-teal-100 text-teal-600 font-bold">&#x2713;</span></div>
+                        <div class="flex-shrink-0 mt-1 mr-4"><span class="flex items-center justify-center h-8 w-8 rounded-full bg-teal-100/80 text-teal-600 font-bold shadow-sm">&#x2713;</span></div>
                         <div>
                             <h4 class="text-xl font-bold text-slate-800">Troubleshooting N1 & Diagnostic</h4>
                             <p class="text-slate-600 mt-2">Connaissance parfaite de l'architecture interne des machines. Identification immédiate des pannes matérielles (RAM, CPU, Alimentation), swap de composants défectueux et flashage de BIOS.</p>
@@ -109,7 +145,7 @@
         <section>
             <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Cartographie des Compétences</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white border-t-4 border-teal-500 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="glass-panel border-t-4 border-teal-500 rounded-xl p-6 shadow-sm hover:shadow-md transition">
                     <h3 class="font-bold text-xl text-slate-800 mb-1">Intégration Hardware</h3>
                     <p class="text-sm text-teal-600 font-medium mb-4">LDLC (2025)</p>
                     <ul class="space-y-2 text-slate-600 text-sm">
@@ -119,7 +155,7 @@
                         <li>&#x25B8; Respect strict des cadences (SLA)</li>
                     </ul>
                 </div>
-                <div class="bg-white border-t-4 border-amber-500 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="glass-panel border-t-4 border-amber-500 rounded-xl p-6 shadow-sm hover:shadow-md transition">
                     <h3 class="font-bold text-xl text-slate-800 mb-1">Rigueur Électrique</h3>
                     <p class="text-sm text-amber-600 font-medium mb-4">AGP Lhuis (2021-2023)</p>
                     <ul class="space-y-2 text-slate-600 text-sm">
@@ -129,7 +165,7 @@
                         <li>&#x25B8; Normes de sécurité</li>
                     </ul>
                 </div>
-                <div class="bg-white border-t-4 border-blue-500 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="glass-panel border-t-4 border-blue-500 rounded-xl p-6 shadow-sm hover:shadow-md transition">
                     <h3 class="font-bold text-xl text-slate-800 mb-1">Gestion de Crise</h3>
                     <p class="text-sm text-blue-600 font-medium mb-4">Walibi & Freelance (2023-2024)</p>
                     <ul class="space-y-2 text-slate-600 text-sm">
@@ -142,24 +178,24 @@
             </div>
         </section>
 
-        <!-- Financement -->
-        <section class="bg-slate-900 rounded-3xl p-8 lg:p-12 shadow-xl text-white">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Financement (Dark Mesh) -->
+        <section class="dark-mesh rounded-3xl p-8 lg:p-12 shadow-2xl text-white relative overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
                 <div>
                     <h2 class="text-3xl font-bold mb-6">Un recrutement à <span class="text-teal-400">risque zéro</span>.</h2>
                     <p class="text-slate-300 text-lg mb-6 leading-relaxed">Le besoin d'une habilitation électrique (B1V) ou d'une formation réseau initiale ne doit pas être un frein. Mon dossier est sécurisé par France Travail via le dispositif <strong>POEI</strong>.</p>
                     <div class="space-y-4">
-                        <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="bg-slate-800/60 backdrop-blur-md p-4 rounded-lg border border-slate-700/50">
                             <h4 class="font-bold text-teal-400 mb-1">1. Formation Préalable (POEI)</h4>
-                            <p class="text-sm text-slate-400">Jusqu'à 450h de formation financées par l'État avant la signature de mon contrat.</p>
+                            <p class="text-sm text-slate-300">Jusqu'à 450h de formation financées par l'État avant la signature de mon contrat.</p>
                         </div>
-                        <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="bg-slate-800/60 backdrop-blur-md p-4 rounded-lg border border-slate-700/50">
                             <h4 class="font-bold text-teal-400 mb-1">2. Période d'Immersion (PMSMP)</h4>
-                            <p class="text-sm text-slate-400">Possibilité d'effectuer un stage d'observation gratuit dans vos baies.</p>
+                            <p class="text-sm text-slate-300">Possibilité d'effectuer un stage d'observation gratuit dans vos baies.</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-inner text-slate-800">
+                <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-inner text-slate-800 border border-white/20">
                     <h3 class="text-lg font-bold mb-4 text-center">Couverture du Budget B1V</h3>
                     <div class="chart-container h-64"><canvas id="budgetChart"></canvas></div>
                     <p class="text-xs text-slate-500 text-center mt-4">Mon CPF de 2082€ couvre à 100% les coûts de la formation électrique B1V (~600€).</p>
@@ -167,37 +203,37 @@
             </div>
         </section>
 
-        <!-- NOUVELLE SECTION DIRECTE : RH & Roadmap -->
+        <!-- RH & Roadmap -->
         <section id="recrutement" class="mb-10">
             <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Dossier de Recrutement</h2>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
                 <!-- BLOC 1 : Pitch RH -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 flex flex-col">
+                <div class="glass-panel rounded-2xl shadow-sm border border-slate-200/60 p-6 md:p-8 flex flex-col">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-bold text-slate-800">Résumé pour les Recruteurs (RH)</h3>
-                        <button onclick="copyText('pitch-text')" class="px-3 py-2 bg-teal-50 hover:bg-teal-100 text-teal-700 text-sm font-semibold rounded transition">&#x2398; Copier</button>
+                        <button onclick="copyText('pitch-text')" class="px-3 py-2 bg-teal-50 hover:bg-teal-100 text-teal-700 text-sm font-semibold rounded transition shadow-sm">&#x2398; Copier</button>
                     </div>
                     
-                    <div id="pitch-text" class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-slate-700 text-sm md:text-base leading-relaxed flex-grow">"Vous recherchez un candidat fiable, rigoureux, et dont l'intégration ne pèsera pas sur votre budget de formation ?<br><br>Fort d'une expérience en production matérielle exigeante (intégration millimétrée de +1500 machines critiques chez LDLC, respect strict des SLA) et en électricité industrielle (AGP), je vous propose une collaboration sécurisée.<br><br>Conscient de vos enjeux de recrutement, j'ai d'ores et déjà validé avec France Travail un financement intégral via le dispositif POEI (appuyé par mon budget CPF de 2080€) pour valider mon habilitation B1V préalablement à l'embauche.<br><br>Vous intégrez ainsi un technicien autonome, à coût de formation initiale nul. Pour vous garantir mon adéquation avec vos équipes et valider mon savoir-être, je suis par ailleurs entièrement disponible pour une période d'immersion préalable (PMSMP) sans engagement."</div>
+                    <div id="pitch-text" class="bg-white/70 p-5 rounded-xl border border-slate-200/60 text-slate-700 text-sm md:text-base leading-relaxed flex-grow">"Vous recherchez un candidat fiable, rigoureux, et dont l'intégration ne pèsera pas sur votre budget de formation ?<br><br>Fort d'une expérience en production matérielle exigeante (intégration millimétrée de +1500 machines critiques chez LDLC, respect strict des SLA) et en électricité industrielle (AGP), je vous propose une collaboration sécurisée.<br><br>Conscient de vos enjeux de recrutement, j'ai d'ores et déjà validé avec France Travail un financement intégral via le dispositif POEI (appuyé par mon budget CPF de 2080€) pour valider mon habilitation B1V préalablement à l'embauche.<br><br>Vous intégrez ainsi un technicien autonome, à coût de formation initiale nul. Pour vous garantir mon adéquation avec vos équipes et valider mon savoir-être, je suis par ailleurs entièrement disponible pour une période d'immersion préalable (PMSMP) sans engagement."</div>
                 </div>
 
                 <!-- BLOC 2 : Roadmap CCNA -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="glass-panel rounded-2xl shadow-sm border border-slate-200/60 p-6 md:p-8">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-bold text-slate-800">Évolution Technique (Roadmap)</h3>
                     </div>
                     <div class="space-y-5">
-                        <div class="p-4 border-l-4 border-teal-500 bg-slate-50 rounded-r-lg">
+                        <div class="p-4 border-l-4 border-teal-500 bg-white/70 rounded-r-lg shadow-sm">
                             <h4 class="font-bold text-slate-800">1. Couche Physique (Acquise)</h4>
                             <p class="text-sm text-slate-600 mt-1">Maîtrise de l'architecture interne du matériel, composants, assemblage, câblage électrique et management thermique. Prêt à intervenir pour l'installation physique en salle.</p>
                         </div>
-                        <div class="p-4 border-l-4 border-amber-500 bg-slate-50 rounded-r-lg">
+                        <div class="p-4 border-l-4 border-amber-500 bg-white/70 rounded-r-lg shadow-sm">
                             <h4 class="font-bold text-slate-800">2. Couche Réseau : CCNA 200-301 (En cours)</h4>
                             <p class="text-sm text-slate-600 mt-1">Étude quotidienne (Labs Packet Tracer, adressage IP, VLANs, routage de base) pour faire le pont entre le hardware et le système logique.</p>
                         </div>
-                        <div class="p-4 border-l-4 border-slate-300 bg-slate-50 rounded-r-lg">
+                        <div class="p-4 border-l-4 border-slate-300 bg-white/70 rounded-r-lg shadow-sm">
                             <h4 class="font-bold text-slate-800">3. Couche Ingénierie : CCNP (Objectif Moyen Terme)</h4>
                             <p class="text-sm text-slate-600 mt-1">Ambition d'évoluer vers le design et l'architecture des réseaux complexes au sein de votre ESN d'ici 3 à 5 ans.</p>
                         </div>
@@ -206,15 +242,15 @@
 
             </div>
 
-            <!-- Accordéon CV Brut pour l'ATS (Optionnel mais très utile) -->
-            <details class="mt-8 bg-white rounded-2xl shadow-sm border border-slate-200 cursor-pointer group">
+            <!-- Accordéon CV Brut pour l'ATS -->
+            <details class="mt-8 glass-panel rounded-2xl shadow-sm border border-slate-200/60 cursor-pointer group">
                 <summary class="p-6 font-bold text-slate-800 text-lg flex justify-between items-center outline-none">
                     <span class="flex items-center"><span class="mr-3">&#x1F4DD;</span> Afficher le CV format texte (Pour logiciels ATS)</span>
                     <span class="text-slate-400 group-open:rotate-180 transition-transform duration-300">&#x25BC;</span>
                 </summary>
-                <div class="p-6 border-t border-slate-200 bg-slate-50">
+                <div class="p-6 border-t border-slate-200/60 bg-white/50">
                     <div class="flex justify-end mb-4">
-                        <button onclick="copyText('cv-text')" class="px-3 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-sm font-semibold rounded transition">&#x2398; Copier le CV</button>
+                        <button onclick="copyText('cv-text')" class="px-3 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded transition shadow-sm">&#x2398; Copier le CV</button>
                     </div>
                     <div id="cv-text" class="font-mono text-sm text-slate-600 whitespace-pre-wrap leading-relaxed">JESSY BIEMY
 Lyon / Morestel (Mobile) | jessy.biemy1@hotmail.com | Permis B / Véhiculé
@@ -247,21 +283,21 @@ FORMATIONS ET CERTIFICATIONS
         </section>
 
     </main>
-    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-center text-sm">
-        <div class="max-w-7xl mx-auto px-4"><p class="font-bold text-white mb-2">Jessy Biemy - Profil Technicien Data Center (2026)</p><p>Construit pour l'efficacité. Pensé pour l'infrastructure.</p></div>
+    <footer class="dark-mesh py-12 border-t border-slate-800 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-4 relative z-10"><p class="font-bold text-white mb-2 tracking-wide">Jessy Biemy - Profil Technicien Data Center (2026)</p><p class="text-slate-400 font-light">Construit pour l'efficacité. Pensé pour l'infrastructure.</p></div>
     </footer>
     <script>
         const colors = { teal: '#0d9488', tealLight: '#99f6e4', amber: '#f59e0b', slate: '#64748b', slateLight: '#e2e8f0' };
         window.onload = function() {
             new Chart(document.getElementById('productivityChart').getContext('2d'), {
                 type: 'bar',
-                data: { labels: ['Moyenne Atelier', 'Ma Moyenne', 'Mon Record'], datasets: [{ label: 'PC / Jour', data: [6.5, 9, 17], backgroundColor: [colors.slateLight, colors.tealLight, colors.teal], borderRadius: 4 }] },
+                data: { labels: ['Moyenne Atelier', 'Ma Moyenne', 'Mon Record'], datasets: [{ label: 'PC / Jour', data: [6.5, 9, 17], backgroundColor: [colors.slateLight, colors.tealLight, colors.teal], borderRadius: 6 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } } }
             });
             new Chart(document.getElementById('budgetChart').getContext('2d'), {
                 type: 'doughnut',
                 data: { labels: ['Coût B1V', 'Reste du CPF'], datasets: [{ data: [600, 1482], backgroundColor: [colors.amber, colors.slateLight], borderWidth: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
+                options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'bottom' } } }
             });
         };
         function copyText(elementId) {
